@@ -2,8 +2,6 @@ package rdd;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.VoidFunction;
 import org.apache.spark.sql.SparkSession;
 
 import java.util.Arrays;
@@ -47,35 +45,23 @@ public class Basic {
         // Since printing is delegated to the RDD it happens in parallel.
         // For versions of Java without lambda, Spark provides some utility
         // interfaces like VoidFunction.
-        numbersRDD.foreach(
-            new VoidFunction<Integer>() {
-                public void call(Integer i) {
-                    System.out.println(i);
-                }
-            }
-        );
+        numbersRDD.foreach(i -> System.out.println(i));
+
+        // NOTE: in the above it may be tempting to replace the above
+        // lambda expression with a method reference -- System.out::println --
+        // but alas this results in
+        //     java.io.NotSerializableException: java.io.PrintStream
 
         // Transform the RDD element by element -- this time use Function
         // instead of a Lambda. Notice how the RDD changes from
         // JavaRDD<Integer> to JavaRDD<double>.
-        JavaRDD<Double> transformedRDD = numbersRDD.map(
-            new Function<Integer, Double>() {
-                public Double call(Integer n) {
-                    return new Double(n) / 10;
-                }
-            }
-        );
+        JavaRDD<Double> transformedRDD =
+            numbersRDD.map(n -> new Double(n) / 10);
 
         // let's see the elements
         System.out.println("*** Print each element of the transformed RDD");
         System.out.println("*** (they may not even be in the same order)");
-        numbersRDD.foreach(
-            new VoidFunction<Integer>() {
-                public void call(Integer i) {
-                    System.out.println(i);
-                }
-            }
-        );
+        transformedRDD.foreach(i -> System.out.println(i));
 
         // get the data back out as a list -- collect() gathers up all the
         // partitions of an RDD and constructs a regular List
@@ -95,9 +81,8 @@ public class Basic {
         System.out.println("*** We _should_ have 4 partitions");
         System.out.println("*** (They can't be of equal size)");
         System.out.println("*** # partitions = " + partitionsRDD.count());
-        partitionsRDD.foreach(
-            new VoidFunction<List<Double>>() {
-                public void call(List<Double> l) {
+        // specifying the type of l is not required here but sometimes it's useful for clarity
+        partitionsRDD.foreach((List<Double> l) -> {
                     // A string for each partition so the output isn't garbled
                     // -- remember the RDD is still distributed so this function
                     // is called in parallel
@@ -107,9 +92,7 @@ public class Basic {
                         sb.append(" ");
                     }
                     System.out.println(sb);
-                }
-            }
-        );
+                });
 
         spark.stop();
     }

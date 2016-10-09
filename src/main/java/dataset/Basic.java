@@ -1,6 +1,5 @@
 package dataset;
 
-import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
@@ -35,12 +34,7 @@ public class Basic {
         System.out.println("*** values > 12");
 
         // the harder way to filter
-        Dataset<Integer> ds2 = ds.filter(new FilterFunction<Integer>() {
-            @Override
-            public boolean call(Integer value) throws Exception {
-                return value > 12;
-            }
-        });
+        Dataset<Integer> ds2 = ds.filter((Integer value) -> value > 12);
 
         ds.show();
 
