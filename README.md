@@ -13,7 +13,7 @@ The project is intended to accompany a number of posts on the blog
 
 The basic approach used in this project is to create multiple small, free-standing example
 programs that each illustrate an aspect fo Spark usage, and to use code comments to explain as
-muny details as seems useful to beginning Spark programmers.
+many details as seems useful to beginning Spark programmers.
 
 ## Dependencies
 
