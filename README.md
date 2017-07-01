@@ -38,3 +38,4 @@ approach: small free-standing example programs.
 | [pairs](src/main/java/pairs) | A special RDD for the common case of pairs of values -- see the local README.md in that directory for details. |
 | [dataset](src/main/java/dataset) | A range of Dataset examples (queryable collection that is statically typed) -- see the local README.md in that directory for details. |
 | [dataframe](src/main/java/dataframe) | A range of DataFrame/Dataset<Row> examples (queryable collection that is dynamically typed) -- see the local README.md in that directory for details. |
+| [streaming](src/main/java/streaming) | A range of streaming examples -- see the local README.md in that directory for details. |
