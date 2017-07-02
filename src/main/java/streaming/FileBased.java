@@ -10,13 +10,13 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import streaming.util.CSVFileStreamGenerator;
 
 
-//
-// File based streaming requires files to be atomically created in
-// the source directory -- in practice this entails creating them somewhere
-// else and renaming them in place. Every batch emitted by the StreamingContext
-// produces all the data from all files that have appeared since the last
-// batch -- potentially many files are combined into a single RDD each time.
-//
+/**
+ * File based streaming requires files to be atomically created in
+ * the source directory -- in practice this entails creating them somewhere
+ * else and renaming them in place. Every batch emitted by the StreamingContext
+ * produces all the data from all files that have appeared since the last
+ * batch -- potentially many files are combined into a single RDD each time.
+ */
 
 public class FileBased {
   public static void main(String[] args) {
@@ -42,13 +42,16 @@ public class FileBased {
     // but it isn't -- it comes from org.apache.spark.streaming)
     JavaStreamingContext ssc = new JavaStreamingContext(sc, new Duration(1000));
 
+    // use the utility class to produce a sequence of 10 files, each containing 100 records
     CSVFileStreamGenerator fm = new CSVFileStreamGenerator(10, 100, 500);
+    // create the stream, which will contain the rows of the individual files as strings
+    // -- notice we can create the stream even though this directory won't have any data until we call
+    // fm.makeFiles() below
+    JavaDStream<String> streamOfRecords = ssc.textFileStream(fm.getDestination().getAbsolutePath());
 
-    // create the stream
-    JavaDStream<String> stream = ssc.textFileStream(fm.getDestination().getAbsolutePath());
-
-    // register for data
-    stream.foreachRDD(r -> {
+    // register a function to process data from the stream -- in this case it's a very simple function
+    // counts the number of elements ine ach RDD and prints it
+    streamOfRecords.foreachRDD(r -> {
       System.out.println(r.count());
     });
 
