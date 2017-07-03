@@ -1,5 +1,24 @@
 # Streaming
 
+## Some philosophy
+
+<p>Spark streaming techniques fall into two broad areas that don't have much to do with each other
+until you get to the advanced topics:</p>
+<ul>
+<li>How to get the data streamed into Spark from some external system like a database or a messaging system --
+and sometimes how to get it streamed back out again.</li>
+<li>How to transform the data within Spark while making full use of the streaming features.</li>
+</ul>
+
+<p>After the single "getting started" example below, we'll look at these two areas separately. Eventually there may
+need to ba a section of "advanced" examples that tie them together again. </p>
+
+<p>Of course, to transform streaming data we need to set up a streaming data source. Many of the sources you'll encounter
+in practice take considerable set up, so I've chosen to use Spark's file streaming mechanism and provide a utility
+class for generating a stream of files containing random data. My hope is that for most users of these examples it
+will need no setup at all, and it has the useful side effect of bringing streaming "down to earth" by using
+such a "low tech" mechanism.  </p>
+
 ## Utilities
 
 <table>
@@ -23,6 +42,12 @@ numbers, and thus vary from file to file.</p>
 
 <p>This class is used by several of the streaming examples.</p>
 </td>
+</tr>
+<tr>
+<td valign="top">StreamingItem.java</td>
+<td><p>An item of data to be streamed. This is used to generate the records int he CSV files and
+also to parse them. Several of the example stream processing pipelines will parse the text data into these
+objects for further processing. </p></td>
 </tr>
 </table>
 
@@ -51,4 +76,16 @@ numbers, and thus vary from file to file.</p>
 <td><p>How to establish multiple streams on the same source of data and register multiple processing
 functions on a single stream.</p></td>
 </tr>
+<tr>
+<td>Filtering.java</td>
+<td><p>Much of the processing we require on streams is agnostic about batch boundaries. It's convenient to have
+methods on JavaDStream that allow us to transform the streamed data item by item (using map()), or filter it
+item by item (using filter()) without being concerned about batch boundaries as embodied by individual RDDs.
+This example again uses map() to parse the records int he ext files and then filter() to filter out individual
+entries, so that by the time we receive batch RDDs only the desired items remain.</p></td>
+</tr>
 </table>
+
+## Streaming Sources
+
+TBD

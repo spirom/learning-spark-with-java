@@ -77,26 +77,26 @@ public class MulitpleTransformations {
     );
 
     // use a simple transformation to create a derived stream -- the original stream of Records is parsed
-    // to produce a stream of KeyAndValue objects
-    JavaDStream<StreamingItem> streamOfKeysAndValues = streamOfRecords.map(s -> new StreamingItem(s));
+    // to produce a stream of StreamingItem objects
+    JavaDStream<StreamingItem> streamOfItems = streamOfRecords.map(s -> new StreamingItem(s));
 
     // use the stream objects to print the values whose key is Key_40
-    streamOfKeysAndValues.foreachRDD(rdd -> {
+    streamOfItems.foreachRDD(rdd -> {
       // NOTE: the [3] below will identify every line printed by this function
-      rdd.foreach(keyAndValue -> {
+      rdd.foreach(item -> {
         // NOTE: since a batch may contain more than one file,
         // and each file will contain a Key_50, this may print more than once per batch
-        if (keyAndValue.getKey().equals("Key_40")) System.out.println("[3] Key_40 = " + keyAndValue.getValue());
+        if (item.getKey().equals("Key_40")) System.out.println("[3] Key_40 = " + item.getValue());
       });
     });
 
-    // Also use the stream of KeyAndValue objects to calculate the fraction of negative values in each batch
+    // Also use the stream of StreamignItem objects to calculate the fraction of negative values in each batch
     // (since the values were pseudo-random, it will often be around 0.5 or so)
-    streamOfKeysAndValues.foreachRDD(rdd -> {
+    streamOfItems.foreachRDD(rdd -> {
       // NOTE: the [4] below will identify every line printed by this function
 
       if (rdd.count() > 0) {
-        double negativeCount = rdd.filter(keyAndValue -> keyAndValue.getValue() < 0).count();
+        double negativeCount = rdd.filter(item -> item.getValue() < 0).count();
         double fraction = negativeCount / rdd.count();
         System.out.println("[4] negative fraction = " + fraction);
       }
