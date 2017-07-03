@@ -34,8 +34,10 @@ numbers, and thus vary from file to file.</p>
 <th>What's Illustrated</th>
 </tr>
 <tr>
-<td>FileBased.java</td>
-<td>How to create a stream of data from files appearing in a directory. <b>Start here.</b>
+<td valign="top">FileBased.java</td>
+<td>How to create a stream of data from files appearing in a directory. <b>Start here.</b></td>
+</tr>
+</table>
 
 ## Processing the Data
 
@@ -45,7 +47,7 @@ numbers, and thus vary from file to file.</p>
 <th>What's Illustrated</th>
 </tr>
 <tr>
-<td>MultipleTransformations.java<td>
+<td valign="top">MultipleTransformations.java<td>
 <td><p>How to establish multiple streams on the same source of data and register multiple processing
 functions on a single stream.</p></td>
 </tr>
