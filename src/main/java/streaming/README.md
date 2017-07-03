@@ -3,8 +3,10 @@
 ** Utilities
 
 <table>
+<tr>
 <th>File</th>
 <th>Purpose</th>
+</tr>
 <tr>
 <td>CVSFileStreamGenerator.java</td>
 <td>
@@ -26,6 +28,25 @@ numbers, and thus vary from file to file.</p>
 
 ## Getting started
 
-| File                  | What's Illustrated    |
-|-----------------------|-----------------------|
-| FileBased.java      | A stream of files moved into a directory. **Start here.** |
+<table>
+<tr>
+<th>File</th>
+<th>What's Illustrated</th>
+</tr>
+<tr>
+<td>FileBased.java</td>
+<td>How to create a stream of data from files appearing in a directory. <b>Start here.</b>
+
+## Processing the Data
+
+<table>
+<tr>
+<th>File</th>
+<th>What's Illustrated</th>
+</tr>
+<tr>
+<td>MultipleTransformations.java<td>
+<td><p>How to establish multiple streams on the same source of data and register multiple processing
+functions on a single stream.</p></td>
+</tr>
+</table>

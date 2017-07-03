@@ -6,23 +6,23 @@ import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import streaming.util.CSVFileStreamGenerator;
-import streaming.util.KeyAndValue;
+import streaming.util.StreamingItem;
 
 import java.io.IOException;
 
 
 /**
- * THis example adds to the simple example in FileBased.java by introducing stream transformations
+ * This example adds to the simple example in FileBased.java by introducing stream transformations
  * and by registering multiple batch processing functions on the various streams.
  * You can think of the relationships between them all as follows:
  *    -- root stream of records from the text files
- *    -- registered function [1]: print the count of records in each batch RDD
- *    -- derived stream by calling count(): each RDD contains the count of elements in the batch
- *       -- registered function [2]: print the count (should give same results as [1])
- *    -- derived stream by calling map() to parse the records int he CSV files
- *       -- registered function [3]: print the value of any object with key "Key_40"
- *       -- registered function [4]: print the fraction of objects whose value is negative
- *  Because the various outputs tend to get tangled up, the output of each registered function identifies by a
+ *      -- registered function [1]: print the count of records in each batch RDD
+ *      -- derived stream by calling count(): each RDD contains the count of elements in the batch
+ *         -- registered function [2]: print the count (should give same results as [1])
+ *      -- derived stream by calling map() to parse the records int he CSV files
+ *         -- registered function [3]: print the value of any object with key "Key_40"
+ *         -- registered function [4]: print the fraction of objects whose value is negative
+ *  Because the various outputs tend to get tangled up, the output of each registered function identifies itself by a
  *  bracketed number: [1], [2], [3] or [4].
  */
 
@@ -78,7 +78,7 @@ public class MulitpleTransformations {
 
     // use a simple transformation to create a derived stream -- the original stream of Records is parsed
     // to produce a stream of KeyAndValue objects
-    JavaDStream<KeyAndValue> streamOfKeysAndValues = streamOfRecords.map(s -> new KeyAndValue(s));
+    JavaDStream<StreamingItem> streamOfKeysAndValues = streamOfRecords.map(s -> new StreamingItem(s));
 
     // use the stream objects to print the values whose key is Key_40
     streamOfKeysAndValues.foreachRDD(rdd -> {

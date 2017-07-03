@@ -13,9 +13,13 @@ import streaming.util.CSVFileStreamGenerator;
 /**
  * File based streaming requires files to be atomically created in
  * the source directory -- in practice this entails creating them somewhere
- * else and renaming them in place. Every batch emitted by the StreamingContext
- * produces all the data from all files that have appeared since the last
- * batch -- potentially many files are combined into a single RDD each time.
+ * else and renaming them in place.
+ *
+ * The streaming context is set up to process a batch of new data once per second. Each batch is a single RDD
+ * containing one entry for each text line of the newly discovered files in the specified directory since the
+ * last batch was processed. Since it's possible for more than one file to appear in the directory in a batch
+ * interval, one such RDD may contain the data from more than one file.
+ *
  */
 
 public class FileBased {

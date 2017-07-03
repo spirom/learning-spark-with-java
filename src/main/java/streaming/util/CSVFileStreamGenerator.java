@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 /**
  * A utility for creating a sequence of files of integers in the file system
@@ -53,7 +52,8 @@ public class CSVFileStreamGenerator {
         PrintWriter p = new java.io.PrintWriter(f);
         try {
             for (int i = 1; i <= _nRecords; i++) {
-                p.println(String.format("Key_%d,%d", i, _random.nextInt()));
+              StreamingItem item = new StreamingItem(_random, "Key_%d");
+                p.println(item);
             }
         } finally {
             p.close();
