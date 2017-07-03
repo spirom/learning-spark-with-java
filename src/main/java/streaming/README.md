@@ -77,7 +77,7 @@ objects for further processing. </p></td>
 functions on a single stream.</p></td>
 </tr>
 <tr>
-<td>Filtering.java</td>
+<td valign="top">Filtering.java</td>
 <td><p>Much of the processing we require on streams is agnostic about batch boundaries. It's convenient to have
 methods on JavaDStream that allow us to transform the streamed data item by item (using map()), or filter it
 item by item (using filter()) without being concerned about batch boundaries as embodied by individual RDDs.
