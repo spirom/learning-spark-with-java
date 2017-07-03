@@ -1,6 +1,6 @@
 # Streaming
 
-** Utilities
+## Utilities
 
 <table>
 <tr>
@@ -8,7 +8,7 @@
 <th>Purpose</th>
 </tr>
 <tr>
-<td>CVSFileStreamGenerator.java</td>
+<td valign="top">CVSFileStreamGenerator.java</td>
 <td>
 <p>A utility for creating a sequence of files of integers in the file system
 so that Spark can treat them like a stream. This follows a standard pattern
@@ -47,7 +47,7 @@ numbers, and thus vary from file to file.</p>
 <th>What's Illustrated</th>
 </tr>
 <tr>
-<td valign="top">MultipleTransformations.java<td>
+<td valign="top">MultipleTransformations.java</td>
 <td><p>How to establish multiple streams on the same source of data and register multiple processing
 functions on a single stream.</p></td>
 </tr>
