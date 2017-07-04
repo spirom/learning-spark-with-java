@@ -84,7 +84,14 @@ item by item (using filter()) without being concerned about batch boundaries as 
 This example again uses map() to parse the records int he ext files and then filter() to filter out individual
 entries, so that by the time we receive batch RDDs only the desired items remain.</p></td>
 </tr>
+<tr>
+<td valign="top">Windowing.java</td>
+<td><p>This example creates two derived streams with different window and slide durations.
+All three streams print their batch size every time they produce a batch, so you can compare the
+number of records across streams and batches.</p></td>
+</tr>
 </table>
+
 
 ## Streaming Sources
 

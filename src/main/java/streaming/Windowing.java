@@ -10,24 +10,22 @@ import streaming.util.StreamingItem;
 
 import java.io.IOException;
 
-
 /**
- * Much of the processing we require on streams is agnostic about batch boundaries. It's convenient to have
- * methods on JavaDStream that allow us to transform the streamed data item by item (using map()), or filter it
- * item by item (using filter()) without being concerned about batch boundaries as embodied by individual RDDs.
- * This example again uses map() to parse the records int he ext files and then filter() to filter out individual
- * entries, so that by the time we receive batch RDDs only the desired items remain.
+ * The windowing methods on a stream allow you to create a derived stream whose batches contain data from some
+ * number fo the most recent batches in the parent stream, and producing a batch per some number of parent
+ * stream batches (default is one.)
  *
- * Of course, similar filtering and transformation methods are available on the JavaRDD class, and its better to
- * use those in the case where your algorithm NEEDS to be aware of batch boundaries. The methods on JavaDStream
- * illustrated here are useful exactly because they abstract batch boundaries away, and also because they
- * create a stream that can be used for additional processing.
+ * Both the sliding window size and the batch frequency are specified as durations, which must be integer
+ * multiples of the parent stream's batch duration. Of course, the parent stream could itself have been
+ * derived from another stream, so its batch duration will not necessarily be the duration specified for the
+ * JavaStreamingContext.
  *
- * On the other hand, if you want to transform data in a way that is aware of batch boundaries but still creates a
- * stream, you can uses transform() and similar methods on JavaDStream that are illustrated elsewhere.
+ * This example creates two derived streams with different window and slide durations. All three streams print
+ * their batch size every time they produce a batch, so you can compare the number of records across streams
+ * and batches.
  */
 
-public class Filtering {
+public class Windowing {
   public static void main(String[] args) {
     //
     // The "modern" way to initialize Spark is to create a SparkSession
@@ -36,7 +34,7 @@ public class Filtering {
     //
     SparkSession spark = SparkSession
         .builder()
-        .appName("streaming-Filtering")
+        .appName("streaming-Windowing")
         .master("local[4]")
         .getOrCreate();
 
@@ -58,17 +56,35 @@ public class Filtering {
     // fm.makeFiles() below
     JavaDStream<String> streamOfRecords = ssc.textFileStream(fm.getDestination().getAbsolutePath());
 
-    // use a simple transformation to create a derived stream -- the original stream of Records is parsed
-    // to produce a stream of KeyAndValue objects
-    JavaDStream<StreamingItem> streamOfItems = streamOfRecords.map(s -> new StreamingItem(s));
+    // Create a derived stream that will produce a batch every second (just like its parent) but the
+    // batch will contain data from the parent stream's most recent two batches
+    JavaDStream<String> threeSecondsEverySecond = streamOfRecords.window(new Duration(3000));
 
-    // create a derived stream that only contains StreamingItem objects whose category value is MEDIUM
-    JavaDStream<StreamingItem> streamOfMediumEntries =
-        streamOfItems.filter(item -> item.getCategory() == StreamingItem.Category.MEDIUM);
+    // Another derived stream, this time creating batch every two seconds, but containing the data from
+    // the parent stream's most recent five batches
+    JavaDStream<String> fiveSecondsEveryTwoSeconds =
+        streamOfRecords.window(new Duration(5000), new Duration(2000));
 
-    // now register a function to print the size of each batch -- notice there are fewer items in each one
-    // as only the MEDIUM entries have been retained.
-    streamOfMediumEntries.foreachRDD(rdd -> System.out.println("Item count = " + rdd.count()));
+    //
+    // Register functions to print the batch sizes in all three of the streams. Notice that:
+    // 1) Each stream identifies itself as either [original], [window 3s] or [window 3s slide 2s]
+    // 2) The "window duration" is how far back int he parent's stream is included in very batch
+    // 3) The "slide duration" is how often a "windowed" batch is produced byt he derived stream (default is the
+    //    same as the parent's "batch duration")
+    // 4) You will see output from the [window 3s] stream every second, but only every two seconds from
+    //    [window 3s slide 2s] -- and you can check the item counts against the right number of most recent item
+    //    counts from the [original] stream.
+    // 5) Time stamps are included to help you keep track of the batches
+    //
+
+    streamOfRecords.foreachRDD((rdd, timeStamp) ->
+        System.out.println("[original] TS: " + timeStamp + " Item count = " + rdd.count()));
+
+    threeSecondsEverySecond.foreachRDD((rdd, timeStamp) ->
+        System.out.println("[window 3s] TS: " + timeStamp + " Item count = " + rdd.count()));
+
+    fiveSecondsEveryTwoSeconds.foreachRDD((rdd, timeStamp) ->
+        System.out.println("[window 5s slide 2s] TS: " + timeStamp + " Item count = " + rdd.count()));
 
     // start streaming
     System.out.println("*** about to start streaming");
