@@ -90,9 +90,29 @@ entries, so that by the time we receive batch RDDs only the desired items remain
 All three streams print their batch size every time they produce a batch, so you can compare the
 number of records across streams and batches.</p></td>
 </tr>
+<tr>
+<td valign="top">StateAccumulation.java</td>
+<td><p>This example uses an accumulator to keep a running total of the number of records processed. Every batch
+that is processed is added to it, and the running total is printed.</p></td>
+</tr>
 </table>
 
 
 ## Streaming Sources
 
 TBD
+
+## Advanced Topics
+
+<table>
+<tr>
+<th>File</th>
+<th>What's Illustrated</th>
+</tr>
+<tr>
+<td valign="top">SimpleRecoveryFromCheckpoint.java</td>
+<td><p>This example demonstrates how to persist configured JavaDStreams across a failure and restart. It simulates
+failure by destroying the first streaming context (for which a checkpoint directory is configured) and
+creating a second one, not from scratch, but by reading the checkpoint directory.</p></td>
+</tr>
+</table>
