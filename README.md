@@ -17,7 +17,12 @@ many details as seems useful to beginning Spark programmers.
 
 ## Dependencies
 
-The project is based on Apache Spark 2.0.0 and Java 8.
+The project is based on Apache Spark 2.2.0 and Java 8.
+
+*Warning: In Spark 2.2, support for Java 7 is finally gone.
+This is documented in the [Spark 2.2.0 release notes](http://spark.apache.org/releases/spark-release-2-2-0.html),
+but alas not in the corresponding
+[JIRA ticket -- Spark 19493](https://issues.apache.org/jira/browse/SPARK-19493).*
 
 ## Related projects
 
