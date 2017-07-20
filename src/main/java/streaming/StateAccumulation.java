@@ -61,8 +61,6 @@ public class StateAccumulation {
     // but it isn't -- it comes from org.apache.spark.streaming)
     JavaStreamingContext ssc = new JavaStreamingContext(sc, new Duration(1000));
 
-    String checkpointPath = File.separator + "tmp" + File.separator + "LSWJ" + File.separator + "checkpoints";
-
     // use the utility class to produce a sequence of 10 files, each containing 100 records
     CSVFileStreamGenerator fm = new CSVFileStreamGenerator(10, 100, 500);
 
