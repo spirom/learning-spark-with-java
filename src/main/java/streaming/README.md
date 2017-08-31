@@ -115,4 +115,12 @@ TBD
 failure by destroying the first streaming context (for which a checkpoint directory is configured) and
 creating a second one, not from scratch, but by reading the checkpoint directory.</p></td>
 </tr>
+<tr>
+<td valign="top">MapWithState.java</td>
+<td>(In progress)</td>
+</tr>
+<tr>
+<td valign="top">Pairs.java</td>
+<td>(In progress)</td>
+</tr>
 </table>

@@ -1,12 +1,13 @@
 package streaming.util;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * This utility class complements the CSVFileStreamGenerator providing a way to parse and represent
  * the key value pairs generated in the CSV files
  */
-public class StreamingItem {
+public class StreamingItem implements Serializable {
 
   public enum Category { SMALL, MEDIUM, LARGE, HUGE };
 
