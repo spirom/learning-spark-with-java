@@ -35,6 +35,12 @@ The [spark-streaming-with-kafka](https://github.com/spirom/spark-streaming-with-
 based on Spark's Scala APIs and illustrates the use of Spark with Apache Kafka, using a similar
 approach: small free-standing example programs.
 
+The [spark-data-sources](https://github.com/spirom/spark-data-sources) project is focused on
+the new experimental APIs introduced in Spark 2.3.0 for developing external data sources of
+various kinds. This API is essentially a Java API (developed in Java) to avoid forcing
+developers to adopt Scala for their data source adapters. Consequently, the example data sources
+int his project are written in Java, but both Java and Scala usage examples are provided.
+
 ## Contents
 
 | Package | What's Illustrated    |
