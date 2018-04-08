@@ -40,7 +40,7 @@ the new experimental APIs introduced in Spark 2.3.0 for developing adapters for
 external data sources of
 various kinds. This API is essentially a Java API (developed in Java) to avoid forcing
 developers to adopt Scala for their data source adapters. Consequently, the example data sources
-int his project are written in Java, but both Java and Scala usage examples are provided.
+in this project are written in Java, but both Java and Scala usage examples are provided.
 
 ## Contents
 
